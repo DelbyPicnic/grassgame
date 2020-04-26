@@ -31,3 +31,14 @@ Windows:
 Use the CMake GUI to make VS2017 .sln project files
 ```
 
+# Development
+It is recommended that any work be done using a Unix or Unix-like environment, Windows is supported but is not an active focus. Any support I can give you will be relative to g++ or clang++.  
+The recommended tools for developing and maintaining the software is VisualStudio Code and a modern C++ compiler such as g++ or clang++.  
+```https://code.visualstudio.com/```  
+To work on the level data and maps, use the Tiled Map Editor.  
+```https://www.mapeditor.org/```  
+To edit pixel-level graphics, use either PikoPixel or Adobe Fireworks.  
+```http://twilightedge.com/mac/pikopixel/```
+
+# Pull Requests & Contribution
+Pull requests will be evaluated according to code quality, and then signifigance. This is a side project, with two people at most working on it, any interest or contributions will be appreciated! 
