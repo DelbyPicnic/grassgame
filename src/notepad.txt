@@ -1,0 +1,10 @@
+// function for centering text elements on the screen
+
+void MenuComponent::SetIndexPosition(const int index){
+    // Get midpoint of the screen
+    auto scrMiddle = Engine::GetWindowSize().x /2;
+
+    // Calculate midpoint - offset
+    float mitemMPoint = scrMiddle - (_itemNameText.getLocalBounds().width / 2);
+    _itemNameText.setPosition(sf::Vector2f(static_cast<float>(mitemMPoint), 170.0f + (index*30.f)));
+}

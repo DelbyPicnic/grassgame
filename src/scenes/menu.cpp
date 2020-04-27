@@ -15,24 +15,30 @@ using namespace sf;
 void MainMenu::Load() {
     cout << "Loading main menu..." << endl;
     {   
-        // Get midpoint of the screen
-        auto scrMiddle = Engine::GetWindowSize().x /2;
-        // Make logo
-        auto mainLogo = makeEntity();
-        auto logoText = mainLogo->addComponent<TextComponent>("GrassGame");
-        mainLogo->addTag("logo");
-        logoText->SetFont("zombie.ttf");
-        logoText->SetFontSize(80);
-        // Calculate midpoint - offset
-        float logoMPoint = scrMiddle - (logoText->getWidth() / 2);
-        logoText->SetPosition(Vector2f(static_cast<float>(logoMPoint), 70.0f));
-        // Build menu
-        std::array<std::string, 5> menuItems {"New Game", "Load Game", "Options", "Credits", "Quit"};
-        for(int i = 0; i < menuItems.size(); i++ ){
+        // Display title center screen
+        auto dispCenter = Engine::GetWindowSize().x /2;
+        auto mainTitle = makeEntity();
+        auto titleText = mainTitle->addComponent<TextComponent>("GRASSGAME");
+
+        mainTitle->addTag("title_main");
+        titleText->SetFont("BrokenChalk.ttf");
+        titleText->SetFontSize(80);
+        float titleMidpoint = dispCenter - (titleText->getWidth() / 2);
+        titleText->SetPosition(Vector2f(static_cast<float>(titleMidpoint), 70.0f));
+
+        // Display Main Menu
+        std::array<std::string, 4> menuItems {"Play", "Connect", "Options", "Quit"};
+        float yPos = Engine::GetWindowSize().y /2;
+        int idx = 0;
+        for(std::string itm : menuItems){
             auto mItem = makeEntity();
-            auto mItemText = mItem->addComponent<MenuComponent>(i+1, menuItems[i]);
+            auto mItemText = mItem->addComponent<MenuComponent>(itm);
+            float itmMidpoint = dispCenter - (mItemText->getWidth() / 2);
+            mItemText->setPosition(Vector2f(static_cast<float>(itmMidpoint), yPos));
             mItem->addTag("menu");
-            mItem->addTag(to_string(i));
+            mItem->addTag("opt_" + to_string(idx));
+            yPos += 30;
+            idx++;
         }
     }
     setLoaded(true);
@@ -64,24 +70,23 @@ void MainMenu::Update(const double& dt){
     for(auto &ent : mItems){
         // Get entity component
         auto entText = ent->get_components<MenuComponent>();
-        entText[0]->IsSelected(false);
+        entText[0]->setColor(sf::Color(220, 220, 220));
     }
 
     // Update the selected menu item
-    vector<shared_ptr<Entity>> selItem = ents.find(to_string(_selItem));
+    vector<shared_ptr<Entity>> selItem = ents.find("opt_" + to_string(_selItem));
     if(selItem[0] != nullptr){
         // Get item component
         auto selEntText = selItem[0]->get_components<MenuComponent>();
-        selEntText[0]->IsSelected(true);
-    }else{
-        std::cout << "No Item Selected!" << std::endl;
+        selEntText[0]->setColor(sf::Color(255, 255, 255));
     }
 
     // User selection actionables
     if(Keyboard::isKeyPressed(Keyboard::Return)){
         switch(_selItem){
-            case 0 :    break;
-            case 1 :    std::cout << "Load Saved Game" << std::endl;
+            case 0 :    std::cout << "Play" << std::endl;
+                        break;
+            case 1 :    std::cout << "Connect" << std::endl;
                         break;
             case 2 :    Engine::ChangeScene(&optmenu);
                         break;
@@ -98,37 +103,32 @@ void MainMenu::Update(const double& dt){
 void OptionMenu::Load(){
     cout << "Loading Options Menu..." << endl;
     {
-        // Get midpoint of the screen
-        auto scrMiddle = Engine::GetWindowSize().x /2;
+        // Display title center screen
+        auto dispCenter = Engine::GetWindowSize().x /2;
+        auto mainTitle = makeEntity();
+        auto titleText = mainTitle->addComponent<TextComponent>("OPTIONS");
 
-        // Make logo
-        auto mainLogo = makeEntity();
-        auto logoText = mainLogo->addComponent<TextComponent>("Options");
-        mainLogo->addTag("logo");
-        logoText->SetFont("times_new_yorker.ttf");
-        logoText->SetFontSize(80);
-
-        // Calculate midpoint - offset
-        float logoMPoint = scrMiddle - (logoText->getWidth() / 2);
-        logoText->SetPosition(Vector2f(static_cast<float>(logoMPoint), 70.0f));
-    
-        // Build options menu
-        // Toggle options:
+        mainTitle->addTag("title_options");
+        titleText->SetFont("BrokenChalk.ttf");
+        titleText->SetFontSize(80);
+        float titleMidpoint = dispCenter - (titleText->getWidth() / 2);
+        titleText->SetPosition(Vector2f(static_cast<float>(titleMidpoint), 70.0f));
         
-        std::array<std::string, 3> menuItems {"Fullscreen", "Vertical Sync (Vsync)", "Use Controller"};
-        for(int i = 0; i < menuItems.size(); i++ ){
+        
+        // Display Main Menu
+        std::array<std::string, 4> menuItems {"Fullscreen", "Vsync", "Use Gamepad"};
+        float yPos = Engine::GetWindowSize().y /2;
+        int idx = 0;
+        for(std::string itm : menuItems){
             auto mItem = makeEntity();
-            auto mItemText = mItem->addComponent<MenuSelectableComponent>(i+1, false ,menuItems[i]);
+            auto mItemText = mItem->addComponent<MenuToggle>(false, itm);
+            float itmMidpoint = dispCenter - (mItemText->getWidth() / 2);
+            mItemText->setPosition(Vector2f(static_cast<float>(itmMidpoint), yPos));
             mItem->addTag("menu");
-            mItem->addTag(to_string(i));
+            mItem->addTag("opt_" + to_string(idx));
+            yPos += 30;
+            idx++;
         }
-
-        /*
-        std::shared_ptr<std::vector<std::string>> scrRes;
-        auto resItem = makeEntity();
-        auto resItemComp = resItem->addComponent<MenuSelectableComponent>(4, 1, scrRes, "Resolution");
-        resItem->addTag("menu");
-        */
     }
     setLoaded(true);
 }
@@ -138,23 +138,20 @@ void OptionMenu::Update(const double& dt){
     vector<shared_ptr<Entity>> mItems = ents.find("menu");
     for(auto &ent : mItems){
         // Get entity component
-        auto entText = ent->get_components<MenuSelectableComponent>();
+        auto entText = ent->get_components<MenuToggle>();
         if(entText[0] != nullptr){
-            entText[0]->IsSelected(false);
+            entText[0]->setColor(sf::Color(220, 220, 220));
         }
     }
     
     // Update the selected menu item
-    vector<shared_ptr<Entity>> selItem = ents.find(to_string(_selItem));
+    vector<shared_ptr<Entity>> selItem = ents.find("opt_" + to_string(_selItem));
     if(selItem[0] != nullptr){
         // Get item component
-        auto selEntText = selItem[0]->get_components<MenuSelectableComponent>();
-        selEntText[0]->IsSelected(true);
-    }else{
-        std::cout << "No Item Selected!" << std::endl;
+        auto selEntText = selItem[0]->get_components<MenuToggle>();
+        selEntText[0]->setColor(sf::Color(255, 255, 255));
     }
     
-
     // Get system events from the window:
     sf::Event event;
     while(Engine::GetWindow().pollEvent(event)){
@@ -173,12 +170,12 @@ void OptionMenu::Update(const double& dt){
                 }
             }
             if(event.key.code == sf::Keyboard::Left){
-                auto entText = mItems[_selItem]->get_components<MenuSelectableComponent>();
-                entText[0]->SetSelectedIndex(-1);
+                auto entText = mItems[_selItem]->get_components<MenuToggle>();
+                entText[0]->setValue(!entText[0]->getValue());
             }
             if(event.key.code == sf::Keyboard::Right){
-                auto entText = mItems[_selItem]->get_components<MenuSelectableComponent>();
-                entText[0]->SetSelectedIndex(1);
+                auto entText = mItems[_selItem]->get_components<MenuToggle>();
+                entText[0]->setValue(!entText[0]->getValue());
             }
             if(event.key.code == sf::Keyboard::BackSpace){
                 Engine::ChangeScene(&mainmenu);

@@ -11,7 +11,7 @@ void TextComponent::render() {
 
 TextComponent::TextComponent(Entity* const p, const std::string& str) : Component(p), _string(str){
     _text.setString(_string);
-    _font = Resources::get<sf::Font>("times_new_yorker.ttf");
+    _font = Resources::get<sf::Font>("MulledWineSeason-Medium.otf");
     _text.setFont(*_font);
 }
 
