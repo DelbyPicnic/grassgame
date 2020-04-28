@@ -1,10 +1,12 @@
 #include "engine.hpp"
 #include "main.hpp"
 #include "scenes/menu.hpp"
+#include "scenes/debug.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
 MainMenu mainmenu;
+DebugScene dbgscene;
 OptionMenu optmenu;
 CreditsMenu crdmenu;
 
@@ -16,5 +18,5 @@ int main(){
     s->fullscreen = false;
     s->input_type = "KEYBOARD";
 
-    Engine::Start(*s, "GrassGame", &mainmenu);
+    Engine::Start(*s, "GrassGame", &dbgscene);
 }

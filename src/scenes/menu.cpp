@@ -14,17 +14,17 @@ using namespace sf;
 
 void MainMenu::Load() {
     cout << "Loading main menu..." << endl;
-    {   
+    { 
         // Display title center screen
         auto dispCenter = Engine::GetWindowSize().x /2;
         auto mainTitle = makeEntity();
         auto titleText = mainTitle->addComponent<TextComponent>("GRASSGAME");
 
         mainTitle->addTag("title_main");
-        titleText->SetFont("BrokenChalk.ttf");
-        titleText->SetFontSize(80);
+        titleText->setFont("BrokenChalk.ttf");
+        titleText->setFontSize(80);
         float titleMidpoint = dispCenter - (titleText->getWidth() / 2);
-        titleText->SetPosition(Vector2f(static_cast<float>(titleMidpoint), 70.0f));
+        titleText->setPosition(Vector2f(static_cast<float>(titleMidpoint), 70.0f));
 
         // Display Main Menu
         std::array<std::string, 4> menuItems {"Play", "Connect", "Options", "Quit"};
@@ -58,7 +58,7 @@ void MainMenu::Update(const double& dt){
                 }
             }
             if(event.key.code == sf::Keyboard::Down){
-                if (_selItem < 4){
+                if (_selItem < 5){
                     _selItem++;
                 }
             }
@@ -67,10 +67,11 @@ void MainMenu::Update(const double& dt){
 
     // Update all menu items
     vector<shared_ptr<Entity>> mItems = ents.find("menu");
+
     for(auto &ent : mItems){
         // Get entity component
         auto entText = ent->get_components<MenuComponent>();
-        entText[0]->setColor(sf::Color(220, 220, 220));
+        entText[0]->setColor(sf::Color(220, 0, 0));
     }
 
     // Update the selected menu item
@@ -78,7 +79,7 @@ void MainMenu::Update(const double& dt){
     if(selItem[0] != nullptr){
         // Get item component
         auto selEntText = selItem[0]->get_components<MenuComponent>();
-        selEntText[0]->setColor(sf::Color(255, 255, 255));
+        selEntText[0]->setColor(sf::Color(0, 0, 255));
     }
 
     // User selection actionables
@@ -109,10 +110,10 @@ void OptionMenu::Load(){
         auto titleText = mainTitle->addComponent<TextComponent>("OPTIONS");
 
         mainTitle->addTag("title_options");
-        titleText->SetFont("BrokenChalk.ttf");
-        titleText->SetFontSize(80);
+        titleText->setFont("BrokenChalk.ttf");
+        titleText->setFontSize(80);
         float titleMidpoint = dispCenter - (titleText->getWidth() / 2);
-        titleText->SetPosition(Vector2f(static_cast<float>(titleMidpoint), 70.0f));
+        titleText->setPosition(Vector2f(static_cast<float>(titleMidpoint), 70.0f));
         
         
         // Display Main Menu

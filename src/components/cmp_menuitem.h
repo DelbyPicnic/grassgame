@@ -16,7 +16,10 @@ public:
     void setColor(const sf::Color color);
     void setText(const std::string& text);
     void setFont(const std::string& font);
+    void setFontSize(unsigned int fSize);
+    void setScale(const float scale);
     void setPosition(const sf::Vector2f position);
+    void setRotation(const float rotation);
     sf::Vector2f getPosition();
     float getWidth();
     float getHeight();
@@ -25,7 +28,6 @@ public:
 protected:
     std::string _labelText;
     sf::Text _label;
-    sf::Color _labelColor = sf::Color(220, 220, 220);
     std::shared_ptr<sf::Font> _font;
 };
 
@@ -44,7 +46,6 @@ public:
 protected:
     std::string _optionText;
     bool _value;
-    sf::Text _label;
 };
 
 // Customizable menu option with many options

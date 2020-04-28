@@ -7,6 +7,10 @@
 
 
 MenuComponent::MenuComponent(Entity* const p, const std::string& str) : Component(p), _labelText(str){
+    // Set default options
+    setFont("MulledWineSeason-Medium.otf");
+    setText(str);
+    _label.setFillColor(sf::Color(220, 220, 220));
 }
 
 void MenuComponent::update(double dt) {
@@ -17,7 +21,7 @@ void MenuComponent::render() {
 }
 
 void MenuComponent::setColor(const sf::Color color){
-    _labelColor = color;
+    _label.setFillColor(color);
 }
 
 void MenuComponent::setText(const std::string& text){
@@ -47,6 +51,9 @@ float MenuComponent::getHeight(){
 
 
 MenuToggle::MenuToggle(Entity* const p, const bool value, const std::string& str) : MenuComponent(p, str), _value(value){
+    MenuComponent::setFont("MulledWineSeason-Medium.otf");
+    MenuComponent::setText(str);
+    _label.setFillColor(sf::Color(220, 220, 220));
 }
 
 void MenuToggle::update(double dt){
@@ -71,6 +78,9 @@ bool MenuToggle::getValue(){
 }
 
 MenuOption::MenuOption(Entity* const p, const int value, const std::vector<std::string> options, const std::string& str) : MenuComponent(p, str), _value(value), _menuOptions(options){
+    setFont("MulledWineSeason-Medium.otf");
+    setText(str);
+    _label.setFillColor(sf::Color(220, 220, 220));
 }
 
 void MenuOption::update(double dt){
