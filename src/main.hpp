@@ -7,4 +7,4 @@
 extern MainMenu mainmenu;
 extern DebugScene dbgscene;
 extern OptionMenu optmenu;
-extern CreditsMenu crdmenu;
+

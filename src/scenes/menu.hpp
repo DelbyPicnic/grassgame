@@ -7,26 +7,24 @@ public:
     ~MainMenu() override = default;
     void Load() override;
     void Update(const double& dt) override;
-private:
-    unsigned int _selItem = 0;
+protected:
+    std::vector<std::shared_ptr<Entity>> menuItems;
+    int selectedIdx = 0;
 };
-
-class OptionMenu : public Scene {
+/*
+class ConnectMenu : public MainMenu {
+public:
+    ConnectMenu() = default;
+    ~ConnectMenu() override = default;
+    void Load() override;
+    void Update(const double& dt) override;
+};
+*/
+class OptionMenu : public MainMenu {
 public:
     OptionMenu() = default;
     ~OptionMenu() override = default;
     void Load() override;
     void Update(const double& dt) override;
-private:
-    unsigned int _selItem = 0;
 };
 
-class CreditsMenu : public Scene {
-public:
-    CreditsMenu() = default;
-    ~CreditsMenu() override = default;
-    void Load() override;
-    void Update(const double& dt) override;
-private:
-    unsigned int _selItem = 0;
-};

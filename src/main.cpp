@@ -8,7 +8,6 @@
 MainMenu mainmenu;
 DebugScene dbgscene;
 OptionMenu optmenu;
-CreditsMenu crdmenu;
 
 int main(){
     Settings* s = new Settings();
@@ -18,5 +17,5 @@ int main(){
     s->fullscreen = false;
     s->input_type = "KEYBOARD";
 
-    Engine::Start(*s, "GrassGame", &dbgscene);
+    Engine::Start(*s, "GrassGame", &mainmenu);
 }
