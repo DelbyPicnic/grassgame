@@ -28,7 +28,7 @@ void MainMenu::Load() {
         std::array<std::string, 4> options {"Play", "Connect", "Options", "Quit"};
         float yPos = Engine::GetWindowSize().y /2;
     
-        for(int i = 0; i < menuItems.size(); i++){
+        for(int i = 0; i < options.size(); i++){
             auto mItem = makeEntity();
             auto mItemText = mItem->addComponent<MenuComponent>(options[i]);
             float itmMidpoint = dispCenter - (mItemText->getWidth() / 2);
@@ -42,7 +42,7 @@ void MainMenu::Load() {
 }
 
 void MainMenu::Update(const double& dt){
-    std::cout << menuItems.size() << std::endl;
+    
     std::shared_ptr<Entity> selected = menuItems[selectedIdx];
 
     sf::Event event;
@@ -53,7 +53,7 @@ void MainMenu::Update(const double& dt){
         if(event.type == sf::Event::KeyPressed){
             int max = menuItems.size() -1;
             if(event.key.code == sf::Keyboard::Up){
-                if(selected > 0){
+                if(selectedIdx > 0){
                     selectedIdx--;
                 }
             }
@@ -145,7 +145,7 @@ void OptionMenu::Update(const double& dt){
         if(event.type == sf::Event::KeyPressed){
             int max = menuItems.size() -1;
             if(event.key.code == sf::Keyboard::Up){
-                if(selected > 0){
+                if(selectedIdx > 0){
                     selectedIdx--;
                 }
             }
