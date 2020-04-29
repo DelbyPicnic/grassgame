@@ -20,6 +20,9 @@ void MenuComponent::render() {
     Renderer::queue(&_label);
 }
 
+void MenuComponent::setIdx(int value){
+}
+
 void MenuComponent::setColor(const sf::Color color){
     _label.setFillColor(color);
 }
@@ -51,26 +54,38 @@ float MenuComponent::getHeight(){
 
 
 MenuToggle::MenuToggle(Entity* const p, const bool value, const std::string& str) : MenuComponent(p, str), _value(value){
-    MenuComponent::setFont("MulledWineSeason-Medium.otf");
-    MenuComponent::setText(str);
+    setFont("MulledWineSeason-Medium.otf");
+    setText(str);
     _label.setFillColor(sf::Color(220, 220, 220));
 }
 
 void MenuToggle::update(double dt){
-    if (_value)
-        _optionText = "ON";
-    else
-        _optionText = "OFF";
-
-    _label.setString(_labelText + " " + _optionText);
 }
 
 void MenuToggle::render(){
     Renderer::queue(&_label);
 }
 
+void MenuToggle::setIdx(int value){
+    if (value % 2 != 0 )
+        _value = !_value;
+    setText(_labelText);
+}
+
 void MenuToggle::setValue(const bool value){
     _value = value;
+    setText(_labelText);
+}
+
+void MenuToggle::setText(const std::string& text){
+    _labelText = text;
+
+    if (_value)
+        _optionText = "ON";
+    else
+        _optionText = "OFF";
+
+    _label.setString(_labelText + " " + _optionText);
 }
 
 bool MenuToggle::getValue(){
@@ -90,10 +105,23 @@ void MenuOption::render(){
     Renderer::queue(&_label);
 }
 
+void MenuOption::setIdx(int value){
+    int idx = _value + value;
+    if (idx >= 0 && idx < _menuOptions.size()){
+        _value = idx;
+    }
+    setText(_labelText);
+}
+
 void MenuOption::setValue(const int value){
-    if (value == 0 || value < _menuOptions.size()){
+    if (value >= 0 && value < _menuOptions.size()){
         _value = value;
     }
+    setText(_labelText);
+}
+
+void MenuOption::setText(const std::string& text){
+    _label.setString(_labelText + " " + _menuOptions[_value]);
 }
 
 void MenuOption::setOptions(const std::vector<std::string> options){

@@ -13,6 +13,7 @@ public:
 
     void update(double dt) override;
     void render() override;
+    virtual void setIdx(int value);
     void setColor(const sf::Color color);
     void setText(const std::string& text);
     void setFont(const std::string& font);
@@ -40,7 +41,9 @@ public:
 
     void update(double dt) override;
     void render() override;
+    void setIdx(int value) override;
     void setValue(const bool value);
+    void setText(const std::string& text);
     bool getValue();
 
 protected:
@@ -57,7 +60,9 @@ public:
 
     void update(double dt) override;
     void render() override;
+    void setIdx(int value);
     void setValue(const int value);
+    void setText(const std::string& text);
     void setOptions(const std::vector<std::string> options);
     void addOption(const std::string option);
     int getValue();
