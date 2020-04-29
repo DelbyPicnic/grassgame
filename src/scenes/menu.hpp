@@ -8,7 +8,7 @@ public:
     void Load() override;
     void Update(const double& dt) override;
 protected:
-    std::vector<std::shared_ptr<Entity>> menuItems;
+    std::vector<std::string> itemTags = {"opt_Play", "opt_Connect", "opt_Options", "opt_Quit"};
     int selectedIdx = 0;
 };
 /*
@@ -26,5 +26,8 @@ public:
     ~OptionMenu() override = default;
     void Load() override;
     void Update(const double& dt) override;
+protected:
+    void setOptions();
+    std::vector<std::string> itemTags = {"opt_fps_limit", "opt_resolution", "opt_fullscreen", "opt_back"};
 };
 

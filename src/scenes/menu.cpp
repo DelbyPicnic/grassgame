@@ -28,13 +28,13 @@ void MainMenu::Load() {
         std::array<std::string, 4> options {"Play", "Connect", "Options", "Quit"};
         float yPos = Engine::GetWindowSize().y /2;
     
-        for(int i = 0; i < menuItems.size(); i++){
+        for(int i = 0; i < options.size(); i++){
             auto mItem = makeEntity();
             auto mItemText = mItem->addComponent<MenuComponent>(options[i]);
             float itmMidpoint = dispCenter - (mItemText->getWidth() / 2);
             mItemText->setPosition(Vector2f(static_cast<float>(itmMidpoint), yPos));
             mItem->addTag("opt_" + options[i]);
-            menuItems.push_back(mItem);
+            mItem->addTag("menu");
             yPos += 40; 
         }
     }
@@ -42,18 +42,18 @@ void MainMenu::Load() {
 }
 
 void MainMenu::Update(const double& dt){
-    std::cout << menuItems.size() << std::endl;
-    std::shared_ptr<Entity> selected = menuItems[selectedIdx];
-
+    
+    auto selected = ents.find(itemTags[selectedIdx]);
+    
     sf::Event event;
     while(Engine::GetWindow().pollEvent(event)){
         if(event.type == Event::Closed){
                 Engine::GetWindow().close();
         }
         if(event.type == sf::Event::KeyPressed){
-            int max = menuItems.size() -1;
+            int max = itemTags.size() -1;
             if(event.key.code == sf::Keyboard::Up){
-                if(selected > 0){
+                if(selectedIdx > 0){
                     selectedIdx--;
                 }
             }
@@ -63,11 +63,11 @@ void MainMenu::Update(const double& dt){
                 }
             }
             if(event.key.code == sf::Keyboard::Left){
-                auto comp = selected->GetCompatibleComponent<MenuComponent>();
+                auto comp = selected[0]->GetCompatibleComponent<MenuComponent>();
                 comp[0]->setIdx(-1);
             }
             if(event.key.code == sf::Keyboard::Right){
-                auto comp = selected->GetCompatibleComponent<MenuComponent>();
+                auto comp = selected[0]->GetCompatibleComponent<MenuComponent>();
                 comp[0]->setIdx(1);
             }
             if(event.key.code == sf::Keyboard::Return){
@@ -84,6 +84,16 @@ void MainMenu::Update(const double& dt){
             }
         }
     }
+    std::vector<std::shared_ptr<Entity>> menuItems = ents.find("menu");
+    for (auto &ent : menuItems){
+        auto comp = ent->GetCompatibleComponent<MenuComponent>();
+        if (ent == selected[0]){
+            comp[0]->setColor(sf::Color(100, 100, 220));
+        }else{
+            comp[0]->setColor(sf::Color(220, 220, 220));
+        }
+    }
+
     Scene::Update(dt);
 }
 
@@ -109,33 +119,57 @@ void OptionMenu::Load(){
         auto optnFPSLimit = makeEntity();
         auto cmpFPSLimit = optnFPSLimit->addComponent<MenuOption>(0, fps_options, "Limit Framerate");
         cmpFPSLimit->setPosition(Vector2f(xPos, yPos));
-        optnFPSLimit->addTag("optn_fps_limit");
-        menuItems.push_back(optnFPSLimit);
-
+        optnFPSLimit->addTag("opt_fps_limit");
+        optnFPSLimit->addTag("menu");
+        
         std::vector<std::string> resolution_options = {"640 x 480", "1280 x 720", "1920 x 1080"};
         auto optnResolution = makeEntity();
         auto cmpResolution = optnResolution->addComponent<MenuOption>(0, resolution_options, "Display Resolution");
         cmpResolution->setPosition(Vector2f(xPos, yPos + 40));
-        optnResolution->addTag("optn_resolution");
-        menuItems.push_back(optnResolution);
+        optnResolution->addTag("opt_resolution");
+        optnResolution->addTag("menu");
 
         auto optnFullscreen = makeEntity();
         auto cmpFullscreen = optnFullscreen->addComponent<MenuToggle>(0, "Fullscreen");
         cmpFullscreen->setPosition(Vector2f(xPos, yPos + 80));
-        optnFullscreen->addTag("optn_fullscreen");
-        menuItems.push_back(optnFullscreen);
+        optnFullscreen->addTag("opt_fullscreen");
+        optnFullscreen->addTag("menu");
 
         auto optnBack = makeEntity();
         auto cmpBack = optnBack->addComponent<MenuComponent>("Done");
         cmpBack->setPosition(Vector2f(xPos, yPos + 120));
-        optnBack->addTag("optn_back");
-        menuItems.push_back(optnBack);
+        optnBack->addTag("opt_back");
+        optnBack->addTag("menu");
     }
     setLoaded(true);
 }
 
+void OptionMenu::setOptions(){
+    
+    auto optnFPSLimit = ents.find("opt_fps_limit");
+    auto cmpFPSLimit = optnFPSLimit[0]->get_components<MenuOption>();
+    int value = cmpFPSLimit[0]->getValue();
+    switch (value){
+        case 0: Engine::GetWindow().setFramerateLimit(0);
+                break;
+        case 1: Engine::GetWindow().setFramerateLimit(30);
+                break;
+        case 2: Engine::GetWindow().setFramerateLimit(40);
+                break;
+        case 3: Engine::GetWindow().setFramerateLimit(59);
+                break;
+        case 4: Engine::GetWindow().setFramerateLimit(60);
+                break;
+        case 5: Engine::GetWindow().setFramerateLimit(120);
+                break;
+        case 6: Engine::GetWindow().setFramerateLimit(144);
+                break;
+    }
+    
+}
+
 void OptionMenu::Update(const double& dt){
-     std::shared_ptr<Entity> selected = menuItems[selectedIdx];
+    auto selected = ents.find(itemTags[selectedIdx]);
 
     sf::Event event;
     while(Engine::GetWindow().pollEvent(event)){
@@ -143,9 +177,9 @@ void OptionMenu::Update(const double& dt){
                 Engine::GetWindow().close();
         }
         if(event.type == sf::Event::KeyPressed){
-            int max = menuItems.size() -1;
+            int max = itemTags.size() -1;
             if(event.key.code == sf::Keyboard::Up){
-                if(selected > 0){
+                if(selectedIdx > 0){
                     selectedIdx--;
                 }
             }
@@ -155,19 +189,30 @@ void OptionMenu::Update(const double& dt){
                 }
             }
             if(event.key.code == sf::Keyboard::Left){
-                auto comp = selected->GetCompatibleComponent<MenuComponent>();
+                auto comp = selected[0]->GetCompatibleComponent<MenuComponent>();
                 comp[0]->setIdx(-1);
             }
             if(event.key.code == sf::Keyboard::Right){
-                auto comp = selected->GetCompatibleComponent<MenuComponent>();
+                auto comp = selected[0]->GetCompatibleComponent<MenuComponent>();
                 comp[0]->setIdx(1);
             }
             if(event.key.code == sf::Keyboard::Return){
                 switch(selectedIdx){
-                    case 3 :    Engine::ChangeScene(&mainmenu);
+                    case 3 :    setOptions();
+                                Engine::ChangeScene(&mainmenu);
                                 break;
                 }
             }
+        }
+    }
+
+    std::vector<std::shared_ptr<Entity>> menuItems = ents.find("menu");
+    for (auto &ent : menuItems){
+        auto comp = ent->GetCompatibleComponent<MenuComponent>();
+        if (ent == selected[0]){
+            comp[0]->setColor(sf::Color(100, 100, 220));
+        }else{
+            comp[0]->setColor(sf::Color(220, 220, 220));
         }
     }
     Scene::Update(dt);
