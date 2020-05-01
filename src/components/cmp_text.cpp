@@ -11,37 +11,37 @@ void TextComponent::render() {
 
 TextComponent::TextComponent(Entity* const p, const std::string& str) : Component(p), _string(str){
     _text.setString(_string);
-    _font = Resources::get<sf::Font>("times_new_yorker.ttf");
+    _font = Resources::get<sf::Font>("MulledWineSeason-Medium.otf");
     _text.setFont(*_font);
 }
 
-void TextComponent::SetText(const std::string& str){
+void TextComponent::setText(const std::string& str){
     _string = str;
     _text.setString(_string);
 }
 
-void TextComponent::SetFont(const std::string& font){
+void TextComponent::setFont(const std::string& font){
     _font = Resources::get<sf::Font>(font);
     _text.setFont(*_font);
 }
 
-void TextComponent::SetFontSize(unsigned int fntSize){
+void TextComponent::setFontSize(unsigned int fntSize){
     _text.setCharacterSize(fntSize);
 }
 
-void TextComponent::SetColour(const sf::Color colour){
+void TextComponent::setColour(const sf::Color colour){
     _text.setFillColor(colour);
 }
 
-void TextComponent::SetScale(const float scale){
+void TextComponent::setScale(const float scale){
     _text.setScale(sf::Vector2f(scale,scale));
 }
 
-void TextComponent::SetPosition(const sf::Vector2f position){
+void TextComponent::setPosition(const sf::Vector2f position){
     _text.setPosition(position);
 }
 
-void TextComponent::SetRotation(const float rotation){
+void TextComponent::setRotation(const float rotation){
     _text.setRotation(rotation);
 }
 

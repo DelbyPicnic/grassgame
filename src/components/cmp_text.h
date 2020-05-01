@@ -12,13 +12,13 @@ public:
     void update(double dt) override;
     void render() override;
 
-    void SetText(const std::string& str);
-    void SetFont(const std::string& font);
-    void SetFontSize(unsigned int fntSize);
-    void SetColour(const sf::Color colour);
-    void SetScale(const float scale);
-    void SetPosition(const sf::Vector2f position);
-    void SetRotation(const float rotation);
+    void setText(const std::string& str);
+    void setFont(const std::string& font);
+    void setFontSize(unsigned int fntSize);
+    void setColour(const sf::Color colour);
+    void setScale(const float scale);
+    void setPosition(const sf::Vector2f position);
+    void setRotation(const float rotation);
 
     float getWidth();
 

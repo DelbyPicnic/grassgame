@@ -7,26 +7,27 @@ public:
     ~MainMenu() override = default;
     void Load() override;
     void Update(const double& dt) override;
-private:
-    unsigned int _selItem = 0;
+protected:
+    std::vector<std::string> itemTags = {"opt_Play", "opt_Connect", "opt_Options", "opt_Quit"};
+    int selectedIdx = 0;
 };
-
-class OptionMenu : public Scene {
+/*
+class ConnectMenu : public MainMenu {
+public:
+    ConnectMenu() = default;
+    ~ConnectMenu() override = default;
+    void Load() override;
+    void Update(const double& dt) override;
+};
+*/
+class OptionMenu : public MainMenu {
 public:
     OptionMenu() = default;
     ~OptionMenu() override = default;
     void Load() override;
     void Update(const double& dt) override;
-private:
-    unsigned int _selItem = 0;
+protected:
+    void setOptions();
+    std::vector<std::string> itemTags = {"opt_fps_limit", "opt_resolution", "opt_fullscreen", "opt_back"};
 };
 
-class CreditsMenu : public Scene {
-public:
-    CreditsMenu() = default;
-    ~CreditsMenu() override = default;
-    void Load() override;
-    void Update(const double& dt) override;
-private:
-    unsigned int _selItem = 0;
-};

@@ -1,12 +1,13 @@
 #include "engine.hpp"
 #include "main.hpp"
 #include "scenes/menu.hpp"
+#include "scenes/debug.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
 MainMenu mainmenu;
+DebugScene dbgscene;
 OptionMenu optmenu;
-CreditsMenu crdmenu;
 
 int main(){
     Settings* s = new Settings();

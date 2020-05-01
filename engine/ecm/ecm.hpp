@@ -14,7 +14,7 @@ class Component {
 
 protected:
   Entity* const _parent;
-  bool _fordeletion; // should be removed
+  bool _fordeletion;
   explicit Component(Entity* const p);
 
 public:
@@ -50,7 +50,7 @@ protected:
   bool _fordeletion;  // should be deleted
   std::set<std::string> _tags;
 
-public:               // Note to self: Entity should prolly have a move function.
+public:               
   void addTag(const std::string& t);
   const std::set<std::string>& getTags() const;
   Scene* const scene;
